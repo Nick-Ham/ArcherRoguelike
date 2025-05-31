@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://cx02r3tv0xnvj"]
+
+[ext_resource type="Shader" path="res://Shaders/AlphaSweep.gdshader" id="1_ixjfd"]
+[ext_resource type="Texture2D" uid="uid://xpfkj70mvh0f" path="res://Assets/Projectiles/Arrow.png" id="1_mpm20"]
+[ext_resource type="Script" path="res://Projectiles/Impacts/ArrowImpact.gd" id="1_pw87f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oc5jx"]
+shader = ExtResource("1_ixjfd")
+shader_parameter/sweepAmount = 0.777
+
+[node name="ArrowImpact" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_pw87f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_oc5jx")
+position = Vector2(-4.8, 0)
+texture = ExtResource("1_mpm20")

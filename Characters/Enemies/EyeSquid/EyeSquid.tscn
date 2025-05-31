@@ -1,0 +1,174 @@
+[gd_scene load_steps=27 format=3 uid="uid://ja6732nxnv2l"]
+
+[ext_resource type="Script" path="res://Characters/Character.gd" id="1_h6v2o"]
+[ext_resource type="Script" path="res://Resources/CharacterStats.gd" id="2_b6hvt"]
+[ext_resource type="Texture2D" uid="uid://tbajcj3tnqf0" path="res://Assets/Character/Eyesquid/idle1.png" id="2_ee6kf"]
+[ext_resource type="Texture2D" uid="uid://dt3gftl6886pv" path="res://Assets/Character/Eyesquid/idle2.png" id="3_2cm1d"]
+[ext_resource type="Script" path="res://Components/Health.gd" id="3_cd25t"]
+[ext_resource type="Shader" path="res://Shaders/HitFlash.gdshader" id="4_o5l3y"]
+[ext_resource type="Texture2D" uid="uid://c27ixmph1f4ie" path="res://Assets/Character/Eyesquid/idle3.png" id="4_pumss"]
+[ext_resource type="Texture2D" uid="uid://befo03tastrwh" path="res://Assets/Character/Eyesquid/idle4.png" id="5_ntayt"]
+[ext_resource type="Script" path="res://Components/Targeter.gd" id="5_qb325"]
+[ext_resource type="Texture2D" uid="uid://c6nmjicfpcv2e" path="res://Assets/Character/Eyesquid/idle5.png" id="6_pot65"]
+[ext_resource type="Texture2D" uid="uid://dvh0yul7m8pyu" path="res://Assets/Character/Eyesquid/idle6.png" id="7_361mm"]
+[ext_resource type="Texture2D" uid="uid://vgsjypckttxo" path="res://Assets/Character/Shadow.png" id="8_km52p"]
+[ext_resource type="Script" path="res://Characters/CharacterAnimationController.gd" id="9_6dp0n"]
+[ext_resource type="Script" path="res://Characters/StateManager/StateManager.gd" id="10_1cbib"]
+[ext_resource type="Script" path="res://Characters/StateManager/CharacterStates/CharacterStateDefault.gd" id="11_kecj1"]
+[ext_resource type="Script" path="res://Characters/StateManager/CharacterStates/CharacterStateDestroyed.gd" id="12_5dglw"]
+[ext_resource type="Script" path="res://Components/PushArea.gd" id="16_7vjon"]
+[ext_resource type="Script" path="res://Characters/Enemies/Zombie/ZombieController.gd" id="18_m1y0h"]
+
+[sub_resource type="Resource" id="Resource_ap2ym"]
+script = ExtResource("2_b6hvt")
+baseHealth = 10.0
+baseDamage = 3.0
+attackSpeed = 1.0
+abilityHaste = 0.0
+movementSpeedAmp = 1.0
+
+[sub_resource type="Animation" id="Animation_sbl7a"]
+resource_name = "HitFlash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/flash_strength")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [1.0, null]
+}
+
+[sub_resource type="Animation" id="Animation_7tvt1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/flash_strength")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x8khw"]
+_data = {
+"HitFlash": SubResource("Animation_sbl7a"),
+"RESET": SubResource("Animation_7tvt1")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_15lya"]
+resource_local_to_scene = true
+shader = ExtResource("4_o5l3y")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_strength = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0hd48"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ee6kf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2cm1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_pumss")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ntayt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pot65")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_361mm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i6jyq"]
+radius = 6.0
+height = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qqqa8"]
+radius = 5.0
+
+[node name="EyeSquid" type="CharacterBody2D" node_paths=PackedStringArray("characterCenter")]
+texture_filter = 1
+collision_layer = 10
+script = ExtResource("1_h6v2o")
+characterStats = SubResource("Resource_ap2ym")
+characterCenter = NodePath("CharacterCenter")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_cd25t")
+
+[node name="CharacterAnimationController" type="Node" parent="." node_paths=PackedStringArray("animatedSprite", "stateManager", "animationPlayer")]
+script = ExtResource("9_6dp0n")
+animatedSprite = NodePath("../AnimatedSprite2D")
+stateManager = NodePath("../CharacterStateManager")
+animationPlayer = NodePath("../AnimationPlayer")
+flipSpriteOnMovement = false
+useWalkAnimation = false
+
+[node name="ZombieController" type="Node" parent="."]
+script = ExtResource("18_m1y0h")
+
+[node name="Targeter" type="Node" parent="."]
+script = ExtResource("5_qb325")
+
+[node name="CharacterStateManager" type="Node" parent="." node_paths=PackedStringArray("stateDefault", "stateDestroyed")]
+script = ExtResource("10_1cbib")
+stateDefault = NodePath("CharacterStateDefault")
+stateDestroyed = NodePath("CharacterStateDestroyed")
+
+[node name="CharacterStateDefault" type="Node" parent="CharacterStateManager"]
+script = ExtResource("11_kecj1")
+
+[node name="CharacterStateDestroyed" type="Node" parent="CharacterStateManager"]
+script = ExtResource("12_5dglw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_x8khw")
+}
+
+[node name="Shadow" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+texture = ExtResource("8_km52p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_15lya")
+position = Vector2(0, -7.5)
+sprite_frames = SubResource("SpriteFrames_0hd48")
+animation = &"idle"
+frame_progress = 0.817175
+offset = Vector2(0, -3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -9)
+shape = SubResource("CapsuleShape2D_i6jyq")
+
+[node name="CharacterCenter" type="Marker2D" parent="."]
+position = Vector2(0, -11)
+
+[node name="PushArea" type="Area2D" parent="."]
+position = Vector2(0, -5)
+collision_layer = 32
+collision_mask = 32
+script = ExtResource("16_7vjon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PushArea"]
+visible = false
+shape = SubResource("CircleShape2D_qqqa8")

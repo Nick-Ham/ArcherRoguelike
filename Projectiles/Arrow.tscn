@@ -1,0 +1,100 @@
+[gd_scene load_steps=12 format=3 uid="uid://rhidheurykhd"]
+
+[ext_resource type="Script" path="res://Projectiles/Arrow.gd" id="1_5mitm"]
+[ext_resource type="Texture2D" uid="uid://xpfkj70mvh0f" path="res://Assets/Projectiles/Arrow.png" id="2_mwxc4"]
+[ext_resource type="Texture2D" uid="uid://c3qqcut262xpv" path="res://Assets/Mask/NeutralPointLight.png" id="3_pssha"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_3rxoe"]
+source = 2
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_tuxtm"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_hrbmd"]
+constant = Color(0.420448, 0.602675, 0.995467, 1)
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_hlpfa"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(1, 1, 1, 1), 2, Quaternion(0.5, 0.5, 0.5, 0.5)]
+op_type = 5
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_3wbod"]
+constant = 0.3
+
+[sub_resource type="VisualShader" id="VisualShader_fdai5"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+
+
+
+void fragment() {
+// Input:4
+	vec2 n_out4p0 = UV;
+
+
+	vec4 n_out3p0;
+// Texture2D:3
+	n_out3p0 = texture(TEXTURE, n_out4p0);
+
+
+// ColorConstant:6
+	vec4 n_out6p0 = vec4(0.420448, 0.602675, 0.995467, 1.000000);
+
+
+// FloatConstant:8
+	float n_out8p0 = 0.300000;
+
+
+// Mix:7
+	vec4 n_out7p0 = mix(n_out3p0, n_out6p0, vec4(n_out8p0));
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out7p0.xyz);
+
+
+}
+"
+graph_offset = Vector2(-219.128, 113.331)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(560, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_3rxoe")
+nodes/fragment/3/position = Vector2(40, 160)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_tuxtm")
+nodes/fragment/4/position = Vector2(-280, 160)
+nodes/fragment/6/node = SubResource("VisualShaderNodeColorConstant_hrbmd")
+nodes/fragment/6/position = Vector2(40, 360)
+nodes/fragment/7/node = SubResource("VisualShaderNodeMix_hlpfa")
+nodes/fragment/7/position = Vector2(320, 160)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatConstant_3wbod")
+nodes/fragment/8/position = Vector2(40, 480)
+nodes/fragment/connections = PackedInt32Array(4, 0, 3, 0, 3, 0, 7, 0, 6, 0, 7, 1, 8, 0, 7, 2, 7, 0, 0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_clfoq"]
+shader = SubResource("VisualShader_fdai5")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v2nlh"]
+radius = 2.0
+
+[node name="Arrow" type="CharacterBody2D"]
+texture_filter = 1
+collision_layer = 16
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_5mitm")
+speed = 700.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_clfoq")
+position = Vector2(-5.5, 0)
+texture = ExtResource("2_mwxc4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_v2nlh")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.615856, 0.999664, 1, 1)
+energy = 0.05
+texture = ExtResource("3_pssha")
+texture_scale = 0.3

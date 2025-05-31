@@ -1,0 +1,124 @@
+[gd_scene load_steps=13 format=3 uid="uid://hx0h37584ggo"]
+
+[ext_resource type="Texture2D" uid="uid://bey0aowoilu8t" path="res://Assets/Weapons/Bow.png" id="1_5sln6"]
+[ext_resource type="Script" path="res://Weapon/Bow/BowWeapon.gd" id="1_17yfd"]
+[ext_resource type="Shader" path="res://Shaders/HitFlash.gdshader" id="2_jr6c5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ybmu4"]
+resource_local_to_scene = true
+shader = ExtResource("2_jr6c5")
+shader_parameter/flash_color = Color(0.442273, 0.750036, 0.953175, 1)
+shader_parameter/flash_strength = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0n1qu"]
+atlas = ExtResource("1_5sln6")
+region = Rect2(34, 0, 17, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pird4"]
+atlas = ExtResource("1_5sln6")
+region = Rect2(0, 0, 17, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lk63x"]
+atlas = ExtResource("1_5sln6")
+region = Rect2(17, 0, 17, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjgk4"]
+atlas = ExtResource("1_5sln6")
+region = Rect2(51, 0, 17, 17)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uyetv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0n1qu")
+}],
+"loop": true,
+"name": &"charged",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pird4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lk63x")
+}],
+"loop": false,
+"name": &"charging",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjgk4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_u47uk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D/AnimatedSprite2D:material:shader_parameter/flash_strength")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_58c6p"]
+resource_name = "chargedFlash"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D/AnimatedSprite2D:material:shader_parameter/flash_strength")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rqs5n"]
+_data = {
+"RESET": SubResource("Animation_u47uk"),
+"chargedFlash": SubResource("Animation_58c6p")
+}
+
+[node name="Bow" type="Node2D" node_paths=PackedStringArray("sprite", "chargeTimer", "spawnMarker", "chargeFlashAnimationPlayer", "pivot")]
+texture_filter = 1
+script = ExtResource("1_17yfd")
+sprite = NodePath("Node2D/AnimatedSprite2D")
+chargeTimer = NodePath("ChargeTimer")
+spawnMarker = NodePath("ProjectileSpawn")
+chargeFlashAnimationPlayer = NodePath("AnimationPlayer")
+flashSpeedScale = 3.0
+pivot = NodePath("Node2D")
+animationStyle = 1
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D"]
+material = SubResource("ShaderMaterial_ybmu4")
+position = Vector2(7, 0)
+sprite_frames = SubResource("SpriteFrames_uyetv")
+animation = &"charged"
+
+[node name="ChargeTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ProjectileSpawn" type="Marker2D" parent="."]
+position = Vector2(10, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_rqs5n")
+}

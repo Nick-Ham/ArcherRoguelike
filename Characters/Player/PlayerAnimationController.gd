@@ -1,0 +1,2 @@
+extends CharacterAnimationController
+class_name PlayerAnimationController

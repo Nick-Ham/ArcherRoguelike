@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bikqf2dd8cerj"]
+
+[ext_resource type="Script" path="res://Characters/Enemies/Zombie/ZombieWeapon.gd" id="1_fk6ww"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kayjj"]
+radius = 7.0
+
+[node name="ZombieWeapon" type="Node2D" node_paths=PackedStringArray("attackHitbox", "cooldownTimer", "pivot")]
+script = ExtResource("1_fk6ww")
+attackHitbox = NodePath("AttackHitbox")
+cooldownTimer = NodePath("Cooldown")
+pivot = NodePath("Pivot")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+visible = false
+shape = SubResource("CircleShape2D_kayjj")
+
+[node name="Cooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="Pivot" type="Node2D" parent="."]

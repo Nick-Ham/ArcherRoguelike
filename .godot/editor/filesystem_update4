@@ -1,0 +1,6 @@
+res://Game/Game.tscn
+res://Shaders/HitFlash.gdshader
+res://Shaders/AlphaSweep.gdshader
+res://Levels/PrototypeLevel.tscn
+res://Characters/Player/Player.tscn
+res://Weapon/Chopper/ChopperWeapon.gd

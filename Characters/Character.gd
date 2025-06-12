@@ -15,6 +15,8 @@ enum Team {
 @export_category("Local")
 @export var characterCenter : Marker2D = null
 
+var scaleFactor : float = 1.0
+
 func _ready() -> void:
 	assert(characterCenter)
 
@@ -22,6 +24,10 @@ func _ready() -> void:
 	if health:
 		health.health_depleted.connect(on_health_depleted)
 
+	loadFromStats()
+
+func setScaleFactor(inScaleFactor : float) -> void:
+	scaleFactor = inScaleFactor
 	loadFromStats()
 
 func loadFromStats() -> void:

@@ -1,0 +1,36 @@
+[gd_resource type="BehaviorTree" load_steps=12 format=3 uid="uid://53tu2uf8go71"]
+
+[ext_resource type="Script" path="res://ai/tasks/conditions/HasTargetCondition.gd" id="1_6gmir"]
+[ext_resource type="Script" path="res://ai/tasks/task/SetupEnemy.gd" id="1_i3f4i"]
+[ext_resource type="Script" path="res://ai/tasks/task/ChaseTarget.gd" id="3_d5eik"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_vpku0"]
+
+[sub_resource type="BTAction" id="BTAction_v87ve"]
+script = ExtResource("1_i3f4i")
+controllerVar = "controller"
+
+[sub_resource type="BTRunLimit" id="BTRunLimit_6yx52"]
+children = [SubResource("BTAction_v87ve")]
+
+[sub_resource type="BTCondition" id="BTCondition_7va2e"]
+script = ExtResource("1_6gmir")
+targetVar = "target"
+
+[sub_resource type="BTAction" id="BTAction_dpwgt"]
+script = ExtResource("3_d5eik")
+targetVar = "target"
+stopAtMin = false
+minDistance = 0.0
+
+[sub_resource type="BTSequence" id="BTSequence_tvoa2"]
+children = [SubResource("BTCondition_7va2e"), SubResource("BTAction_dpwgt")]
+
+[sub_resource type="BTSequence" id="BTSequence_gg26j"]
+
+[sub_resource type="BTSelector" id="BTSelector_oul7g"]
+children = [SubResource("BTRunLimit_6yx52"), SubResource("BTSequence_tvoa2"), SubResource("BTSequence_gg26j")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_vpku0")
+root_task = SubResource("BTSelector_oul7g")

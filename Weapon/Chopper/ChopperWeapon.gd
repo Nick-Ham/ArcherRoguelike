@@ -7,10 +7,12 @@ class_name ChopperWeapon
 @export var attackPivot : Node2D = null
 @export var attackProgressBar : TextureProgressBar = null
 @export var attackHitbox : Area2D = null
+@export var comboDelayTimer : Timer = null
 @export_category("Config")
 @export_group("Behavior")
-@export var unlimitedCombo : bool = true
+@export var unlimitedCombo : bool = false
 @export var comboLength : int = 3
+@export var comboDelay : float = 0.6
 @export var characterMotion : float = 90.0
 @export var knockback : float = 250.0
 @export var baseSwingSpeed : float = 1.0
@@ -31,7 +33,6 @@ class_name ChopperWeapon
 
 var continueAttacking : bool = false
 var currentCombo : int = 0
-
 var hitThisAttack : Array[Character] = []
 
 func on_activate_changed(isActivating : bool) -> void:
@@ -40,7 +41,7 @@ func on_activate_changed(isActivating : bool) -> void:
 			continueAttacking = false
 		return
 
-	if isActivating and !isAttacking():
+	if isActivating and !isAttacking() and comboDelayTimer.is_stopped():
 		attack()
 	else:
 		continueAttacking = true
@@ -53,13 +54,24 @@ func _ready() -> void:
 	assert(holsterAnimationPlayer)
 	assert(attackAnimationPlayer)
 	assert(attackHitbox)
+	assert(comboDelayTimer)
 	super._ready()
 
 	attackAnimationPlayer.animation_finished.connect(on_attackAnimationPlayer_animation_finished)
+	comboDelayTimer.timeout.connect(on_comboDelayTimer_timeout)
+
+func on_comboDelayTimer_timeout() -> void:
+	if continueAttacking:
+		attack()
+	else:
+		holsterAnimationPlayer.play(fadeInAnimation)
 
 func on_attackAnimationPlayer_animation_finished(_inAnimationName : String) -> void:
 	if !continueAttacking or currentCombo >= comboLength:
-		holsterAnimationPlayer.play(fadeInAnimation)
+
+		var attackSpeed : float = owningCharacter.getStats().attackSpeed
+		comboDelayTimer.start(comboDelay * (1.0 / attackSpeed))
+
 		stopCombo()
 		return
 

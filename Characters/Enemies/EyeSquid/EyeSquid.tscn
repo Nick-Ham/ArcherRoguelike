@@ -1,23 +1,25 @@
-[gd_scene load_steps=27 format=3 uid="uid://ja6732nxnv2l"]
+[gd_scene load_steps=29 format=3 uid="uid://ja6732nxnv2l"]
 
 [ext_resource type="Script" path="res://Characters/Character.gd" id="1_h6v2o"]
 [ext_resource type="Script" path="res://Resources/CharacterStats.gd" id="2_b6hvt"]
-[ext_resource type="Texture2D" uid="uid://tbajcj3tnqf0" path="res://Assets/Character/Eyesquid/idle1.png" id="2_ee6kf"]
-[ext_resource type="Texture2D" uid="uid://dt3gftl6886pv" path="res://Assets/Character/Eyesquid/idle2.png" id="3_2cm1d"]
 [ext_resource type="Script" path="res://Components/Health.gd" id="3_cd25t"]
 [ext_resource type="Shader" path="res://Shaders/HitFlash.gdshader" id="4_o5l3y"]
-[ext_resource type="Texture2D" uid="uid://c27ixmph1f4ie" path="res://Assets/Character/Eyesquid/idle3.png" id="4_pumss"]
-[ext_resource type="Texture2D" uid="uid://befo03tastrwh" path="res://Assets/Character/Eyesquid/idle4.png" id="5_ntayt"]
-[ext_resource type="Script" path="res://Components/Targeter.gd" id="5_qb325"]
-[ext_resource type="Texture2D" uid="uid://c6nmjicfpcv2e" path="res://Assets/Character/Eyesquid/idle5.png" id="6_pot65"]
-[ext_resource type="Texture2D" uid="uid://dvh0yul7m8pyu" path="res://Assets/Character/Eyesquid/idle6.png" id="7_361mm"]
 [ext_resource type="Texture2D" uid="uid://vgsjypckttxo" path="res://Assets/Character/Shadow.png" id="8_km52p"]
 [ext_resource type="Script" path="res://Characters/CharacterAnimationController.gd" id="9_6dp0n"]
 [ext_resource type="Script" path="res://Characters/StateManager/StateManager.gd" id="10_1cbib"]
 [ext_resource type="Script" path="res://Characters/StateManager/CharacterStates/CharacterStateDefault.gd" id="11_kecj1"]
 [ext_resource type="Script" path="res://Characters/StateManager/CharacterStates/CharacterStateDestroyed.gd" id="12_5dglw"]
+[ext_resource type="Texture2D" uid="uid://bwcnb7hoqxgjb" path="res://Assets/Character/Eyesquid/eyeSquid_idle1.png" id="12_in7no"]
+[ext_resource type="Texture2D" uid="uid://dbm67tsr1gj8n" path="res://Assets/Character/Eyesquid/eyeSquid_charging1.png" id="12_lwxha"]
+[ext_resource type="Texture2D" uid="uid://cuvfyvcbcmvsb" path="res://Assets/Character/Eyesquid/eyeSquid_idle2.png" id="13_6og7l"]
+[ext_resource type="Texture2D" uid="uid://byvxtxqufao46" path="res://Assets/Character/Eyesquid/eyeSquid_charging2.png" id="13_81nva"]
+[ext_resource type="Texture2D" uid="uid://g0j78tjhm5a6" path="res://Assets/Character/Eyesquid/eyeSquid_idle3.png" id="14_bqd0e"]
+[ext_resource type="Texture2D" uid="uid://jcqrirc4tnti" path="res://Assets/Character/Eyesquid/eyeSquid_idle4.png" id="15_mrdpr"]
 [ext_resource type="Script" path="res://Components/PushArea.gd" id="16_7vjon"]
+[ext_resource type="Texture2D" uid="uid://ba6ggnbxu2b5p" path="res://Assets/Character/Eyesquid/eyeSquid_idle5.png" id="16_pfu7p"]
+[ext_resource type="Texture2D" uid="uid://cw6nhh2eh08l1" path="res://Assets/Character/Eyesquid/eyeSquid_idle6.png" id="17_ir8da"]
 [ext_resource type="Script" path="res://Characters/Enemies/Zombie/ZombieController.gd" id="18_m1y0h"]
+[ext_resource type="Texture2D" uid="uid://jbuv7unkddvu" path="res://Assets/Character/Eyesquid/eyeSquid_spit.png" id="20_i6i06"]
 
 [sub_resource type="Resource" id="Resource_ap2ym"]
 script = ExtResource("2_b6hvt")
@@ -74,26 +76,45 @@ shader_parameter/flash_strength = 0.0
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_ee6kf")
+"texture": ExtResource("12_lwxha")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_2cm1d")
+"texture": ExtResource("13_81nva")
+}],
+"loop": false,
+"name": &"charge",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_in7no")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_pumss")
+"texture": ExtResource("13_6og7l")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_ntayt")
+"texture": ExtResource("14_bqd0e")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_pot65")
+"texture": ExtResource("15_mrdpr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_361mm")
+"texture": ExtResource("16_pfu7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_ir8da")
 }],
 "loop": true,
 "name": &"idle",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_i6i06")
+}],
+"loop": true,
+"name": &"spit",
+"speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i6jyq"]
@@ -124,9 +145,6 @@ useWalkAnimation = false
 [node name="ZombieController" type="Node" parent="."]
 script = ExtResource("18_m1y0h")
 
-[node name="Targeter" type="Node" parent="."]
-script = ExtResource("5_qb325")
-
 [node name="CharacterStateManager" type="Node" parent="." node_paths=PackedStringArray("stateDefault", "stateDestroyed")]
 script = ExtResource("10_1cbib")
 stateDefault = NodePath("CharacterStateDefault")
@@ -134,6 +152,7 @@ stateDestroyed = NodePath("CharacterStateDestroyed")
 
 [node name="CharacterStateDefault" type="Node" parent="CharacterStateManager"]
 script = ExtResource("11_kecj1")
+acceleration = 600.0
 
 [node name="CharacterStateDestroyed" type="Node" parent="CharacterStateManager"]
 script = ExtResource("12_5dglw")
@@ -152,7 +171,6 @@ material = SubResource("ShaderMaterial_15lya")
 position = Vector2(0, -7.5)
 sprite_frames = SubResource("SpriteFrames_0hd48")
 animation = &"idle"
-frame_progress = 0.817175
 offset = Vector2(0, -3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

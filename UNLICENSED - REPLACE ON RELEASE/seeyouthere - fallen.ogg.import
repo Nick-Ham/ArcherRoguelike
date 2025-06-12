@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://u7omjxw7i5r2"
+path="res://.godot/imported/seeyouthere - fallen.ogg-bd4d2f61747ebc630144b55ec318c61a.oggvorbisstr"
+
+[deps]
+
+source_file="res://UNLICENSED - REPLACE ON RELEASE/seeyouthere - fallen.ogg"
+dest_files=["res://.godot/imported/seeyouthere - fallen.ogg-bd4d2f61747ebc630144b55ec318c61a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

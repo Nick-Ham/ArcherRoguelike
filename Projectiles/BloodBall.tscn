@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvgvqh1scpnyl"]
+
+[ext_resource type="Script" path="res://Projectiles/Projectile.gd" id="1_2b7b8"]
+[ext_resource type="Texture2D" uid="uid://bxc5nl4oeyur3" path="res://Assets/Projectiles/Blood.png" id="2_5il7s"]
+[ext_resource type="Texture2D" uid="uid://c3qqcut262xpv" path="res://Assets/Mask/NeutralPointLight.png" id="3_lug85"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v2nlh"]
+radius = 2.0
+
+[node name="BloodBall" type="CharacterBody2D"]
+texture_filter = 1
+collision_layer = 16
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_2b7b8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_5il7s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_v2nlh")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.615856, 0.999664, 1, 1)
+energy = 0.05
+texture = ExtResource("3_lug85")
+texture_scale = 0.3

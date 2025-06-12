@@ -3,6 +3,8 @@ class_name Level
 
 @onready var playerScene : PackedScene = preload("res://Characters/Player/Player.tscn")
 
+
+
 @export_category("Config")
 @export var playerSpawn : Marker2D = null
 

@@ -21,12 +21,12 @@ func initializeLevel(inLevelPacked : PackedScene) -> void:
 func getCurrentLevel() -> Level:
 	return currentLevel
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Escape"):
-		get_tree().quit()
-
-	if Input.is_action_just_pressed("F1"):
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("F1"):
 		get_tree().reload_current_scene()
+
+	if event.is_action_pressed("Escape"):
+		get_tree().quit()
 
 static func getGame(inTree : SceneTree) -> Game:
 	var game : Game = inTree.current_scene as Game

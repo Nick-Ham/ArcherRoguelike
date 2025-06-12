@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://65fr0kc26l3l"]
+[gd_scene load_steps=27 format=3 uid="uid://65fr0kc26l3l"]
 
 [ext_resource type="Script" path="res://Characters/Character.gd" id="1_cac8u"]
 [ext_resource type="Script" path="res://Components/Health.gd" id="2_1ajf2"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://Resources/CharacterStats.gd" id="2_ofo4n"]
 [ext_resource type="Texture2D" uid="uid://bxn5708n35gsp" path="res://Assets/Character/Zombie/ZombieWalk1.png" id="3_i2ye6"]
 [ext_resource type="Texture2D" uid="uid://bufwy83qdiwb2" path="res://Assets/Character/Zombie/ZombieWalk2.png" id="4_6d4e1"]
-[ext_resource type="Script" path="res://Components/Targeter.gd" id="4_w3swc"]
 [ext_resource type="Script" path="res://Characters/Enemies/Zombie/ZombieAnimationController.gd" id="7_m3p42"]
 [ext_resource type="Script" path="res://Characters/StateManager/StateManager.gd" id="9_gd8tx"]
 [ext_resource type="Script" path="res://Characters/StateManager/CharacterStates/CharacterStateDefault.gd" id="10_o7bva"]
@@ -14,7 +13,9 @@
 [ext_resource type="Script" path="res://Characters/StateManager/CharacterStates/CharacterStateDestroyed.gd" id="11_r5n1i"]
 [ext_resource type="Script" path="res://Components/PushArea.gd" id="12_r35o4"]
 [ext_resource type="Script" path="res://Characters/Enemies/Zombie/ZombieController.gd" id="14_mtmu3"]
+[ext_resource type="BehaviorTree" uid="uid://53tu2uf8go71" path="res://Characters/Enemies/Zombie/ZombieBehaviorTree.tres" id="15_ef8m7"]
 [ext_resource type="PackedScene" uid="uid://bikqf2dd8cerj" path="res://Characters/Enemies/Zombie/ZombieWeapon.tscn" id="15_ot5ud"]
+[ext_resource type="Script" path="res://Components/Targeter.gd" id="16_oshol"]
 
 [sub_resource type="Resource" id="Resource_4edj3"]
 script = ExtResource("2_ofo4n")
@@ -95,6 +96,11 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_ch5xh"]
 radius = 5.0
 
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_wxv71"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g8ock"]
+radius = 200.0
+
 [node name="Zombie" type="CharacterBody2D" node_paths=PackedStringArray("characterCenter")]
 texture_filter = 1
 collision_layer = 6
@@ -105,9 +111,6 @@ characterCenter = NodePath("CharacterCenter")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_1ajf2")
-
-[node name="Targeter" type="Node" parent="."]
-script = ExtResource("4_w3swc")
 
 [node name="ZombieAnimationController" type="Node" parent="." node_paths=PackedStringArray("animatedSprite", "stateManager", "animationPlayer")]
 script = ExtResource("7_m3p42")
@@ -169,6 +172,22 @@ libraries = {
 [node name="ZombieWeapon" parent="." instance=ExtResource("15_ot5ud")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, -5)
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_ch5xh")
+
+[node name="BTPlayer" type="BTPlayer" parent="."]
+behavior_tree = ExtResource("15_ef8m7")
+blackboard_plan = SubResource("BlackboardPlan_wxv71")
+
+[node name="Targeter" type="Node" parent="." node_paths=PackedStringArray("targetArea", "behaviorTreePlayer")]
+script = ExtResource("16_oshol")
+targetArea = NodePath("../TargetArea")
+behaviorTreePlayer = NodePath("../BTPlayer")
+
+[node name="TargetArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TargetArea"]
+visible = false
+shape = SubResource("CircleShape2D_g8ock")

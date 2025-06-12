@@ -4,8 +4,6 @@ class_name PlayerController
 @export_category("Config")
 @export var playerCamera : Camera2D = null
 
-var lastInputDirection : Vector2 = Vector2()
-var lastAimPosition : Vector2 = Vector2()
 var isActivating : bool = false
 
 func _ready() -> void:

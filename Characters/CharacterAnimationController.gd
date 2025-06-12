@@ -24,6 +24,8 @@ class_name CharacterAnimationController
 @onready var owningCharacter : Character = Character.getOwningCharacter(self)
 @onready var healthComponent : Health = Util.getChildOfType(owningCharacter, Health)
 
+@onready var damageNumberScene : PackedScene = preload("res://UI/DamageNumber.tscn")
+
 func _ready() -> void:
 	assert(animatedSprite)
 	assert(stateManager)
@@ -34,6 +36,16 @@ func _ready() -> void:
 func on_health_changed(lastHealth : float, newHealth : float) -> void:
 	if newHealth < lastHealth:
 		animationPlayer.play(hitFlashKey)
+		makeDamageNumber(lastHealth - newHealth)
+
+func makeDamageNumber(inDamage : float) -> void:
+	var damageNumberInstance : DamageNumber = damageNumberScene.instantiate()
+	damageNumberInstance.start(inDamage)
+
+	damageNumberInstance.global_position = owningCharacter.getCharacterCenter(true)
+
+	var level : Level = Game.getLevel(get_tree())
+	level.add_child(damageNumberInstance)
 
 func _process(delta: float) -> void:
 	updateLean(delta)

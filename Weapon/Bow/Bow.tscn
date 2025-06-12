@@ -93,7 +93,7 @@ _data = {
 "chargedFlash": SubResource("Animation_58c6p")
 }
 
-[node name="Bow" type="Node2D" node_paths=PackedStringArray("sprite", "chargeTimer", "spawnMarker", "chargeFlashAnimationPlayer", "pivot")]
+[node name="Bow" type="Node2D" node_paths=PackedStringArray("sprite", "chargeTimer", "spawnMarker", "chargeFlashAnimationPlayer")]
 texture_filter = 1
 script = ExtResource("1_17yfd")
 sprite = NodePath("Node2D/AnimatedSprite2D")
@@ -101,7 +101,7 @@ chargeTimer = NodePath("ChargeTimer")
 spawnMarker = NodePath("ProjectileSpawn")
 chargeFlashAnimationPlayer = NodePath("AnimationPlayer")
 flashSpeedScale = 3.0
-pivot = NodePath("Node2D")
+baseDamageMult = 1.8
 animationStyle = 1
 
 [node name="Node2D" type="Node2D" parent="."]

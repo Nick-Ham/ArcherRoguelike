@@ -1,5 +1,8 @@
 class_name Util
 
+static func validate(inObject : Variant) -> bool:
+	return is_instance_valid(inObject) and !inObject.is_queued_for_deletion()
+
 static func safeConnect(inSignal : Signal, inCallable : Callable) -> void:
 	if inSignal.is_connected(inCallable):
 		inSignal.disconnect(inCallable)

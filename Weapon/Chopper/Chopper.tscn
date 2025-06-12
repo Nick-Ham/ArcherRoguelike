@@ -106,7 +106,7 @@ tracks/3/path = NodePath("Attack/AdjustmentPivot/AttackProgressBar:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.133333, 0.266667, 0.6, 0.7),
+"times": PackedFloat32Array(0.1, 0.266667, 0.633333, 0.7),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -118,7 +118,7 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.333333, 0.5, 0.6),
+"times": PackedFloat32Array(0, 0.3, 0.333333, 0.466667, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "values": [{
 "args": [0],
@@ -202,7 +202,7 @@ _data = {
 }
 point_count = 5
 
-[node name="Chopper" type="Node2D" node_paths=PackedStringArray("holsterAnimationPlayer", "attackAnimationPlayer", "attackPivot", "attackProgressBar", "attackHitbox", "pivot")]
+[node name="Chopper" type="Node2D" node_paths=PackedStringArray("holsterAnimationPlayer", "attackAnimationPlayer", "attackPivot", "attackProgressBar", "attackHitbox", "comboDelayTimer", "pivot")]
 texture_filter = 1
 script = ExtResource("1_hv8po")
 holsterAnimationPlayer = NodePath("HolsterAnimation")
@@ -210,9 +210,11 @@ attackAnimationPlayer = NodePath("AttackAnimation")
 attackPivot = NodePath("Attack")
 attackProgressBar = NodePath("Attack/AdjustmentPivot/AttackProgressBar")
 attackHitbox = NodePath("Attack/Hitbox")
+comboDelayTimer = NodePath("ComboDelayTimer")
 swipeFx1 = ExtResource("2_7hlqq")
 swipeFx2 = ExtResource("3_i08il")
 swipeFx3 = ExtResource("4_vg54q")
+usePivot = true
 pivot = NodePath("Pivot")
 baseDamageMult = 1.5
 
@@ -261,7 +263,6 @@ rotation = 0.473516
 [node name="AttackAxe" type="Sprite2D" parent="Attack/AdjustmentPivot/Path2D/PathFollow2D"]
 modulate = Color(1, 1, 1, 0)
 rotation = -0.474756
-scale = Vector2(1, 1)
 texture = ExtResource("2_s0slb")
 
 [node name="Hitbox" type="Area2D" parent="Attack"]
@@ -269,4 +270,8 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Attack/Hitbox"]
+visible = false
 polygon = PackedVector2Array(-4, 0, -10, 28, 29, 18, 40, 0, 30, -19, -9, -26)
+
+[node name="ComboDelayTimer" type="Timer" parent="."]
+one_shot = true

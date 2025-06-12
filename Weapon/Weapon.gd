@@ -5,6 +5,8 @@ class_name Weapon
 @onready var controller : Controller = Controller.getController(owningCharacter)
 
 @export_category("Local")
+@export_group("Pivot")
+@export var usePivot : bool = false
 @export var pivot : Node2D = null
 @export_category("Config")
 @export var baseDamageMult : float = 1.0
@@ -21,7 +23,8 @@ func on_activate_changed(_isActivating : bool) -> void:
 	return
 
 func _ready() -> void:
-	assert(pivot)
+	if usePivot:
+		assert(pivot)
 
 	z_as_relative = true
 	setupWeapon()
@@ -33,7 +36,7 @@ func setupWeapon() -> void:
 	if controller:
 		bindToController(controller)
 
-	if animationStyle == AnimationStyle.MeleeHolster:
+	if animationStyle == AnimationStyle.MeleeHolster and usePivot:
 		pivot.z_index = -1
 
 func _process(_delta: float) -> void:
@@ -57,7 +60,7 @@ func updateWeaponPosition() -> void:
 func updateHolster() -> void:
 	var moveDirection : float = sign(controller.getLastInputDirection().x)
 
-	if !is_zero_approx(moveDirection):
+	if !is_zero_approx(moveDirection) and usePivot:
 		pivot.scale.x = moveDirection
 
 func orbitWeapon() -> void:

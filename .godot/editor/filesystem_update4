@@ -1,6 +1,10 @@
-res://Game/Game.tscn
-res://Shaders/HitFlash.gdshader
-res://Shaders/AlphaSweep.gdshader
 res://Levels/PrototypeLevel.tscn
-res://Characters/Player/Player.tscn
-res://Weapon/Chopper/ChopperWeapon.gd
+res://Shaders/HitFlash.gdshader
+res://Characters/Enemies/Zombie/ZombieBehaviorTree.tres
+res://Shaders/AlphaSweep.gdshader
+res://Game/Game.tscn
+res://Characters/Enemies/Zombie/Zombie.tscn
+res://Weapon/BloodGun/BloodGunWeapon.tscn
+res://Components/Targeter.gd
+res://ai/tasks/conditions/HasTargetCondition.gd
+res://ai/tasks/task/ChaseTarget.gd
